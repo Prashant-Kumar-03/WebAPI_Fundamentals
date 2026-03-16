@@ -1,0 +1,8 @@
+@API_Fundamentals_HostAddress = http://localhost:5184
+
+GET {{API_Fundamentals_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+GET {{API_Fundamentals_HostAddress}}/api/Auth/login
+
