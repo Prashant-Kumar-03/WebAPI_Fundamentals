@@ -7,6 +7,9 @@ namespace API_Fundamentals.Core.Interafces
 		Task<IEnumerable<CustomerDto>> GetAllCustomersAsync();
 		Task<CustomerDto?> GetCustomerByIdAsync(int id);
 		Task<CustomerDto> CreateCustomerAsync(CustomerCreateDto customerDto);
-		Task<CustomerDto> 
+
+
+		Task<IEnumerable<CustomerWithOrdersDto>> GetAllCustomersWithOrdersAsync();
+
 	}
 }

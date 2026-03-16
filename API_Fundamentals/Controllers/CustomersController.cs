@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace API_Fundamentals.Controllers
 {
 	[ApiController]
@@ -15,6 +16,21 @@ namespace API_Fundamentals.Controllers
 	//[Authorize] // 🔒 Now, no one can access these endpoints without a valid token
 	public class CustomersController(ICustomerService customerService) : ControllerBase
 	{
+		[HttpGet("{id:int}")] // Constraint ensures 'id' must be an integer
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomerDto))]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult<CustomerDto>> Get(int id)
+		{
+			var result = await customerService.GetCustomerByIdAsync(id);
+
+			if (result == null)
+			{
+				return NotFound(new { message = $"Customer with ID {id} not found." });
+			}
+
+			return Ok(result);
+		}
+
 		[Route("Get_all")]
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomers()
@@ -22,11 +38,11 @@ namespace API_Fundamentals.Controllers
 			var result = await customerService.GetAllCustomersAsync();
 			return Ok(result);
 		}
-		[Route("with orders")]
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Customer>>> GetCustomersWithOrders()
+
+		[HttpGet("with-orders")]
+		public async Task<ActionResult<IEnumerable<CustomerWithOrdersDto>>> GetCustomersWithOrders()
 		{
-			var result = await customerService.GetCustomersWithOrdersAsync();
+			var result = await customerService.GetAllCustomersWithOrdersAsync();
 			return Ok(result);
 		}
 
